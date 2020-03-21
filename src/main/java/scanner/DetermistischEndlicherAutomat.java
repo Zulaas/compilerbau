@@ -8,11 +8,11 @@ public class DetermistischEndlicherAutomat {
     /**
      * The Transitions.
      */
-    char transitions[][][];
+    char[][][] transitions;
     /**
      * The States.
      */
-    byte states[];
+    byte[] states;
 
     /**
      * Instantiates a new Dea.
@@ -20,7 +20,7 @@ public class DetermistischEndlicherAutomat {
      * @param transitions the transitions
      * @param states      the states
      */
-    DetermistischEndlicherAutomat(char transitions[][][], byte states[]) {
+    DetermistischEndlicherAutomat(char[][][] transitions, byte[] states) {
         this.transitions = transitions;
         this.states = states;
     }
