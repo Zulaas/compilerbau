@@ -174,4 +174,8 @@ public class ArithmetikParserClass implements TokenList {
                     + input[pointer]);
         System.out.println(s);
     }
+
+    boolean lexicalAnalysis(){
+        return true;
+    }
 }
