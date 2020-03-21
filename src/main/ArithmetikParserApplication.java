@@ -1,5 +1,7 @@
 /**
  * The type Arithmetik parser application.
+ *
+ * @author jan
  */
 class ArithmetikParserApplication implements TokenList {
     /**

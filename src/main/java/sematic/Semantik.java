@@ -1,5 +1,6 @@
 /**
  * The type Semantic.
+ * @author jan
  */
 class Semantic {
 

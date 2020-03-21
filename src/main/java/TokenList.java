@@ -1,5 +1,6 @@
 /**
  * The interface Token list.
+ * @author jan
  */
 interface TokenList {
 

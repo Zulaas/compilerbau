@@ -1,10 +1,10 @@
 
-class NumScanner extends Scanner {
+class NumAbstractScanner extends AbstractScanner {
 
 
-    NumScanner() {
+    NumAbstractScanner() {
 
-        char transitions[][][] = {
+        char[][][] transitions = {
 
                 {{}, {','}, {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}, {'('}, {')'}, {'+'}, {'-'}, {'*'}, {'/'}, {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}},
                 {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
@@ -17,10 +17,11 @@ class NumScanner extends Scanner {
                 {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}},
                 {{}, {}, {}, {}, {}, {}, {}, {}, {}, {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}}};
 
-        byte states[] = {START, KOMMA, IDENT, OPEN_PAR, CLOSE_PAR, PLUS, MINUS, MULT, DIV, NUM};
+        byte[] states = {START, KOMMA, IDENT, OPEN_PAR, CLOSE_PAR, PLUS, MINUS, MULT, DIV, NUM};
         this.dea = new DEA(transitions, states);
     }
 
+    @Override
     String getTokenString(byte token) {
         switch (token) {
             case 1:

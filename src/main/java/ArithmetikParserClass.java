@@ -3,6 +3,7 @@ import java.io.*;
 
 /**
  * The type Arithmetik parser class.
+ * @author jan
  */
 public class ArithmetikParserClass implements TokenList {
     /**
@@ -48,13 +49,13 @@ public class ArithmetikParserClass implements TokenList {
         char[] addSet = {'+'};
         char[] subSet = {'-'};
         SyntaxTree epsilonTree;
-        if (match(addSet, sT))
+        if (match(addSet, sT)) {
             return term(sT.insertSubtree(TERM)) &&
                     rightExpression(sT.insertSubtree(RIGHT_EXPRESSION));
-        else if (match(subSet, sT))
+        } else if (match(subSet, sT)) {
             return term(sT.insertSubtree(TERM)) &&
                     rightExpression(sT.insertSubtree(RIGHT_EXPRESSION));
-        else {
+        } else {
             epsilonTree = sT.insertSubtree(EPSILON);
             return true;
         }
@@ -83,10 +84,10 @@ public class ArithmetikParserClass implements TokenList {
         char[] divSet = {'/'};
         SyntaxTree epsilonTree;
 
-        if (match(multDivSet, sT))
+        if (match(multDivSet, sT)) {
             return operator(sT.insertSubtree(OPERATOR)) &&
                     rightTerm(sT.insertSubtree(RIGHT_TERM));
-        else {
+        } else {
             epsilonTree = sT.insertSubtree(EPSILON);
             return true;
         }
@@ -103,12 +104,12 @@ public class ArithmetikParserClass implements TokenList {
         char[] closeParSet = {')'};
         char[] digitSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
-        if (match(openParSet, sT))
+        if (match(openParSet, sT)) {
             if (expression(sT.insertSubtree(EXPRESSION))) {
 
-                if (match(closeParSet, sT))
+                if (match(closeParSet, sT)) {
                     return true;
-                else {
+                } else {
                     syntaxError("Geschlossene Klammer erwartet");
                     return false;
                 }
@@ -116,9 +117,9 @@ public class ArithmetikParserClass implements TokenList {
                 syntaxError("Fehler in geschachtelter sematic.Expression");
                 return false;
             }
-        else if (num(sT.insertSubtree(NUM)))
+        } else if (num(sT.insertSubtree(NUM))) {
             return true;
-        else {
+        } else {
             syntaxError("Ziffer oder Klammer auf erwartet");
             return false;
         }
@@ -133,10 +134,11 @@ public class ArithmetikParserClass implements TokenList {
     boolean num(SyntaxTree sT) {
         char[] digitSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
-        if (lookAhead(digitSet))
+        if (lookAhead(digitSet)) {
             return digit(sT.insertSubtree(DIGIT)) && num(sT.insertSubtree(NUM));
-        else
+        } else {
             return digit(sT.insertSubtree(DIGIT));
+        }
     }
 
     /**
@@ -165,7 +167,7 @@ public class ArithmetikParserClass implements TokenList {
      */
     boolean match(char[] matchSet, SyntaxTree sT) {
         SyntaxTree node;
-        for (int i = 0; i < matchSet.length; i++)
+        for (int i = 0; i < matchSet.length; i++) {
             if (input[pointer] == matchSet[i]) {
 
                 node = sT.insertSubtree(INPUT_SIGN);
@@ -174,6 +176,7 @@ public class ArithmetikParserClass implements TokenList {
                 pointer++;
                 return true;
             }
+        }
         return false;
     }
 
@@ -184,9 +187,11 @@ public class ArithmetikParserClass implements TokenList {
      * @return the boolean
      */
     boolean lookAhead(char[] aheadSet) {
-        for (int i = 0; i < aheadSet.length; i++)
-            if (input[pointer + 1] == aheadSet[i])
+        for (int i = 0; i < aheadSet.length; i++) {
+            if (input[pointer + 1] == aheadSet[i]) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -206,8 +211,9 @@ public class ArithmetikParserClass implements TokenList {
                     maxPointer = i;
                     input[i] = EOF;
                     break;
-                } else
+                } else {
                     input[i] = (char) c;
+                }
             }
         } catch (Exception e) {
             System.out.println("Fehler beim Dateizugriff: " + name);
@@ -240,8 +246,9 @@ public class ArithmetikParserClass implements TokenList {
      * @param t the t
      */
     void ausgabe(String s, int t) {
-        for (int i = 0; i < t; i++)
+        for (int i = 0; i < t; i++) {
             System.out.print("  ");
+        }
         System.out.println(s);
     }
 
@@ -252,12 +259,13 @@ public class ArithmetikParserClass implements TokenList {
      */
     void syntaxError(String s) {
         char z;
-        if (input[pointer] == EOF)
+        if (input[pointer] == EOF) {
             System.out.println("Syntax Fehler beim " + (pointer + 1) + ". Zeichen: "
                     + "EOF");
-        else
+        } else {
             System.out.println("Syntax Fehler beim " + (pointer + 1) + ". Zeichen: "
                     + input[pointer]);
+        }
         System.out.println(s);
     }
 

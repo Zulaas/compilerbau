@@ -1,15 +1,18 @@
 /**
  * The type Num.
+ * @author jan
  */
 class Num extends Semantic {
 
     private int potenz(int v) {
         int p = 10;
-        while (v / p != 0)
+        while (v / p != 0) {
             p = p * 10;
+        }
         return p;
     }
 
+    @Override
     int f(SyntaxTree t, int n) {
         if (t.getChildNumber() == 2) {
             SyntaxTree digit = t.getChild(0),

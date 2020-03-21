@@ -1,9 +1,12 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.*;
+/**
+ * The type Num scanner test.
+ * @author jan
+ */
+class NumAbstractScannerTest extends NumAbstractScanner {
 
-class NumScannerTest extends NumScanner {
 
     @BeforeEach
     void setUp() {
@@ -14,13 +17,13 @@ class NumScannerTest extends NumScanner {
     }
 
     public void TestScanner() {
-        NumScanner scanner;
-        scanner = new NumScanner();
+        NumAbstractScanner scanner;
+        scanner = new NumAbstractScanner();
         if (scanner.readInput("testdatei_arithmetik.txt")) {
             scanner.printInputStream();
             if (scanner.lexicalAnalysis())
                 scanner.printTokenStream();
         } else
-            System.out.println("Scanner beendet");
+            System.out.println("AbstractScanner beendet");
     }
 }

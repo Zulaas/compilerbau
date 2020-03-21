@@ -1,5 +1,6 @@
 /**
  * The type Digit.
+ * @author jan
  */
 public class Digit  extends Semantic{
 

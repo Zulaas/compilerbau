@@ -1,8 +1,10 @@
 /**
  * The type Operator.
+ * @author jan
  */
 class Operator extends Semantic {
 
+    @Override
     int f(SyntaxTree t, int n) {
         if (t.getChildNumber() == 3) {
             SyntaxTree expression = t.getChild(1);

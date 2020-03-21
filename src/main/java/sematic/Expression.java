@@ -1,9 +1,11 @@
 /**
  * The type Expression.
+ * @author jan
  */
 class Expression extends Semantic {
     // expression->term rightExpression
     // expression.f=rightExpression.f(term.f)
+    @Override
     int f(SyntaxTree t, int n) {
         SyntaxTree term = t.getChild(0),
                 rightExpression = t.getChild(1);

@@ -3,6 +3,7 @@ import java.util.*;
 
 /**
  * The type Syntax tree.
+ * @author jan
  */
 class SyntaxTree implements TokenList {
 
@@ -70,13 +71,15 @@ class SyntaxTree implements TokenList {
      * @param t the t
      */
     void printSyntaxTree(int t) {
-        for (int i = 0; i < t; i++)
+        for (int i = 0; i < t; i++) {
             System.out.print("  ");
+        }
         System.out.print(this.getTokenString());
-        if (this.character != 0)
+        if (this.character != 0) {
             System.out.println(":" + this.getCharacter());
-        else
+        } else {
             System.out.println("");
+        }
         for (int i = 0; i < this.childNodes.size(); i++) {
             this.childNodes.get(i).printSyntaxTree(t + 1);
         }
@@ -182,10 +185,11 @@ class SyntaxTree implements TokenList {
      * @return the child
      */
     SyntaxTree getChild(int i) {
-        if (i > this.childNodes.size())
+        if (i > this.childNodes.size()) {
             return null;
-        else
+        } else {
             return this.childNodes.get(i);
+        }
     }
 
     /**

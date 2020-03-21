@@ -1,8 +1,10 @@
 /**
  * The type Right term.
+ * @author jan
  */
 class RightTerm extends Semantic{
 
+	@Override
 	int f(SyntaxTree t, int n){
 		if (t.getChildNumber()==3){
 			SyntaxTree symbol=t.getChild(0),
@@ -15,7 +17,8 @@ class RightTerm extends Semantic{
 					rightTerm,operator.value.f(operator,UNDEFINED));
 			default: return UNDEFINED;
 			}
-		}else
-			return n;		
+		}else {
+			return n;
+		}
 	}
 }
