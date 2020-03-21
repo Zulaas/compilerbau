@@ -1,3 +1,4 @@
+
 import java.io.*;
 
 
@@ -12,7 +13,7 @@ public class ArithmetikParserClass implements TokenList {
     public final char EOF = (char) 255;
     private int pointer;
     private int maxPointer;
-    private char input[];
+    private char[] input;
     private SyntaxTree parseTree;
 
 
@@ -35,8 +36,8 @@ public class ArithmetikParserClass implements TokenList {
      * @return the boolean
      */
     boolean expression(SyntaxTree sT) {
-        return (term(sT.insertSubtree(TERM)) &&
-                rightExpression(sT.insertSubtree(RIGHT_EXPRESSION)));
+        return (term(sT.insertSubtree(TokenList.TERM)) &&
+                rightExpression(sT.insertSubtree(TokenList.RIGHT_EXPRESSION)));
     }
 
     /**
@@ -50,13 +51,13 @@ public class ArithmetikParserClass implements TokenList {
         char[] subSet = {'-'};
         SyntaxTree epsilonTree;
         if (match(addSet, sT)) {
-            return term(sT.insertSubtree(TERM)) &&
-                    rightExpression(sT.insertSubtree(RIGHT_EXPRESSION));
+            return term(sT.insertSubtree(TokenList.TERM)) &&
+                    rightExpression(sT.insertSubtree(TokenList.RIGHT_EXPRESSION));
         } else if (match(subSet, sT)) {
-            return term(sT.insertSubtree(TERM)) &&
-                    rightExpression(sT.insertSubtree(RIGHT_EXPRESSION));
+            return term(sT.insertSubtree(TokenList.TERM)) &&
+                    rightExpression(sT.insertSubtree(TokenList.RIGHT_EXPRESSION));
         } else {
-            epsilonTree = sT.insertSubtree(EPSILON);
+            epsilonTree = sT.insertSubtree(TokenList.EPSILON);
             return true;
         }
     }
@@ -68,8 +69,8 @@ public class ArithmetikParserClass implements TokenList {
      * @return the boolean
      */
     boolean term(SyntaxTree sT) {
-        return (operator(sT.insertSubtree(OPERATOR))
-                && rightTerm(sT.insertSubtree(RIGHT_TERM)));
+        return (operator(sT.insertSubtree(TokenList.OPERATOR))
+                && rightTerm(sT.insertSubtree(TokenList.RIGHT_TERM)));
     }
 
 
@@ -85,10 +86,10 @@ public class ArithmetikParserClass implements TokenList {
         SyntaxTree epsilonTree;
 
         if (match(multDivSet, sT)) {
-            return operator(sT.insertSubtree(OPERATOR)) &&
-                    rightTerm(sT.insertSubtree(RIGHT_TERM));
+            return operator(sT.insertSubtree(TokenList.OPERATOR)) &&
+                    rightTerm(sT.insertSubtree(TokenList.RIGHT_TERM));
         } else {
-            epsilonTree = sT.insertSubtree(EPSILON);
+            epsilonTree = sT.insertSubtree(TokenList.EPSILON);
             return true;
         }
     }
@@ -105,7 +106,7 @@ public class ArithmetikParserClass implements TokenList {
         char[] digitSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
         if (match(openParSet, sT)) {
-            if (expression(sT.insertSubtree(EXPRESSION))) {
+            if (expression(sT.insertSubtree(TokenList.EXPRESSION))) {
 
                 if (match(closeParSet, sT)) {
                     return true;
@@ -117,7 +118,7 @@ public class ArithmetikParserClass implements TokenList {
                 syntaxError("Fehler in geschachtelter sematic.Expression");
                 return false;
             }
-        } else if (num(sT.insertSubtree(NUM))) {
+        } else if (num(sT.insertSubtree(TokenList.NUM))) {
             return true;
         } else {
             syntaxError("Ziffer oder Klammer auf erwartet");
@@ -135,9 +136,9 @@ public class ArithmetikParserClass implements TokenList {
         char[] digitSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
         if (lookAhead(digitSet)) {
-            return digit(sT.insertSubtree(DIGIT)) && num(sT.insertSubtree(NUM));
+            return digit(sT.insertSubtree(TokenList.DIGIT)) && num(sT.insertSubtree(TokenList.NUM));
         } else {
-            return digit(sT.insertSubtree(DIGIT));
+            return digit(sT.insertSubtree(TokenList.DIGIT));
         }
     }
 
@@ -170,7 +171,7 @@ public class ArithmetikParserClass implements TokenList {
         for (int i = 0; i < matchSet.length; i++) {
             if (input[pointer] == matchSet[i]) {
 
-                node = sT.insertSubtree(INPUT_SIGN);
+                node = sT.insertSubtree(TokenList.INPUT_SIGN);
                 node.setCharacter(input[pointer]);
 
                 pointer++;

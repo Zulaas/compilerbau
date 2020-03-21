@@ -8,94 +8,11 @@ import java.io.*;
 abstract class AbstractScanner implements TokenList {
 
 
-    /**
-     * The type Input character.
-     */
-    class InputCharacter {
-
-        /**
-         * The Character.
-         */
-        char character;
-        /**
-         * The Line.
-         */
-        int line;
-
-        /**
-         * Instantiates a new Input character.
-         *
-         * @param c the c
-         * @param l the l
-         */
-        InputCharacter(char c, int l) {
-            this.character = c;
-            this.line = l;
-        }
-    }
-
-
-    /**
-     * The type Dea.
-     */
-    class DEA {
-        /**
-         * The Transitions.
-         */
-        char transitions[][][];
-        /**
-         * The States.
-         */
-        byte states[];
-
-        /**
-         * Instantiates a new Dea.
-         *
-         * @param transitions the transitions
-         * @param states      the states
-         */
-        DEA(char transitions[][][], byte states[]) {
-            this.transitions = transitions;
-            this.states = states;
-        }
-    }
-
-
-    /**
-     * The type Token.
-     */
-    class Token {
-        /**
-         * The Token.
-         */
-        byte token;
-        /**
-         * The Lexem.
-         */
-        String lexem;
-        /**
-         * The Line.
-         */
-        int line;
-
-        /**
-         * Instantiates a new Token.
-         *
-         * @param token the token
-         * @param line  the line
-         * @param lexem the lexem
-         */
-        Token(byte token, int line, String lexem) {
-            this.token = token;
-            this.lexem = lexem;
-            this.line = line;
-        }
-    }
 
     /**
      * The Eof.
      */
-    public final char EOF = (char) 255;
+    private final char EOF = (char) 255;
     private LinkedList<InputCharacter> inputStream;
     private int pointer;
     private String lexem;
@@ -238,7 +155,7 @@ abstract class AbstractScanner implements TokenList {
      *
      * @return the next token
      */
-    byte getNextToken() {
+    private byte getNextToken() {
 
         boolean transitionFound = false;
         int actualState = 0;
