@@ -87,7 +87,7 @@ class SyntaxTree implements TokenList {
     }
 
     void setSemantikFunction(byte b) {
-        switch (b) {/*
+        switch (b) {
 			case 1: value=new Expression();
 					break;
 			case 2: value=new RightExpression();
@@ -101,13 +101,12 @@ class SyntaxTree implements TokenList {
 			case 6: value=new Operator();
 					break;
 			case 7: value=new Digit();
-					break; */
+					break;
             default:
                 value = new Semantic();
                 break;
         }
     }
-
 
     SyntaxTree insertSubtree(byte b) {
         SyntaxTree node;
@@ -130,6 +129,4 @@ class SyntaxTree implements TokenList {
     int getChildNumber() {
         return childNodes.size();
     }
-
-
 }
