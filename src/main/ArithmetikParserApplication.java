@@ -1,5 +1,3 @@
-import parser.ArithmetikParserClass;
-
 /**
  * The type Arithmetik parser application.
  *
