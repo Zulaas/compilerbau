@@ -2,6 +2,7 @@
 class ArithmetikParserApplication implements TokenList{
 	public static void main(String args[]){
 		SyntaxTree parseTree = new SyntaxTree(EXPRESSION);
+
 		ArithmetikParserClass parser = new ArithmetikParserClass(parseTree);
 		if (parser.readInput("testdatei_arithmetik.txt"))
 			if (parser.lexicalAnalysis())
