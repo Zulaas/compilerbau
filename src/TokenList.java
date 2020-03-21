@@ -1,42 +1,148 @@
-
-
+/**
+ * The interface Token list.
+ */
 interface TokenList {
 
+    /**
+     * The constant NO_TYPE.
+     */
     final byte NO_TYPE = 0,
-            NUM = 1,
-            DIGIT = 2,
-            INPUT_SIGN = 3,
-            EPSILON = 4,
-            START = 5,
-            NOT_FINAL = 6,
-            KOMMA = 7,
-            IDENT = 8,
-            OPEN_PAR = 9,
-            CLOSE_PAR = 10,
-            PLUS = 11,
-            MINUS = 12,
-            MULT = 13,
-            DIV = 14,
-            EXPRESSION = 15,
-            RIGHT_EXPRESSION = 16,
-            TERM = 17,
-            RIGHT_TERM = 18,
-            OPERATOR = 20,
-            PROGRAM = 21,
-            FUNCTION = 22,
+    /**
+     * The Num.
+     */
+    NUM = 1,
+    /**
+     * The Digit.
+     */
+    DIGIT = 2,
+    /**
+     * The Input sign.
+     */
+    INPUT_SIGN = 3,
+    /**
+     * The Epsilon.
+     */
+    EPSILON = 4,
+    /**
+     * The Start.
+     */
+    START = 5,
+    /**
+     * The Not final.
+     */
+    NOT_FINAL = 6,
+    /**
+     * The Komma.
+     */
+    KOMMA = 7,
+    /**
+     * The Ident.
+     */
+    IDENT = 8,
+    /**
+     * The Open par.
+     */
+    OPEN_PAR = 9,
+    /**
+     * The Close par.
+     */
+    CLOSE_PAR = 10,
+    /**
+     * The Plus.
+     */
+    PLUS = 11,
+    /**
+     * The Minus.
+     */
+    MINUS = 12,
+    /**
+     * The Mult.
+     */
+    MULT = 13,
+    /**
+     * The Div.
+     */
+    DIV = 14,
+    /**
+     * The Expression.
+     */
+    EXPRESSION = 15,
+    /**
+     * The Right expression.
+     */
+    RIGHT_EXPRESSION = 16,
+    /**
+     * The Term.
+     */
+    TERM = 17,
+    /**
+     * The Right term.
+     */
+    RIGHT_TERM = 18,
+    /**
+     * The Operator.
+     */
+    OPERATOR = 20,
+    /**
+     * The Program.
+     */
+    PROGRAM = 21,
+    /**
+     * The Function.
+     */
+    FUNCTION = 22,
 
+    /**
+     * The String.
+     */
     STRING = 23,
-            ENDSTATE = 24,
-            COMPARISION = 25,
-            IF = 26,
-            DO = 27,
-            END = 28,
-            WHILE = 29,
-            DEFINE = 30,
-            ASSIGN = 31,
-            PARAMETER = 32,
-            CALL = 33,
-            RETURN = 34;
+    /**
+     * The Endstate.
+     */
+    ENDSTATE = 24,
+    /**
+     * The Comparision.
+     */
+    COMPARISION = 25,
+    /**
+     * The If.
+     */
+    IF = 26,
+    /**
+     * The Do.
+     */
+    DO = 27,
+    /**
+     * The End.
+     */
+    END = 28,
+    /**
+     * The While.
+     */
+    WHILE = 29,
+    /**
+     * The Define.
+     */
+    DEFINE = 30,
+    /**
+     * The Assign.
+     */
+    ASSIGN = 31,
+    /**
+     * The Parameter.
+     */
+    PARAMETER = 32,
+    /**
+     * The Call.
+     */
+    CALL = 33,
+    /**
+     * The Return.
+     */
+    RETURN = 34;
 
+    /**
+     * The constant UNDEFINED.
+     */
     final int UNDEFINED = 0x10000001;
 }

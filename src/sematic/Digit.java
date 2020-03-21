@@ -1,3 +1,6 @@
+/**
+ * The type Digit.
+ */
 public class Digit  extends Semantic{
 
     @Override

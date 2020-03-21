@@ -1,4 +1,6 @@
-
+/**
+ * The type Operator.
+ */
 class Operator extends Semantic {
 
     int f(SyntaxTree t, int n) {

@@ -1,15 +1,26 @@
 
 import java.util.*;
 
+/**
+ * The type Syntax tree.
+ */
 class SyntaxTree implements TokenList {
 
 
     private LinkedList<SyntaxTree> childNodes;
     private byte token;
     private char character;
+    /**
+     * The Value.
+     */
     public Semantic value;
 
 
+    /**
+     * Instantiates a new Syntax tree.
+     *
+     * @param t the t
+     */
     SyntaxTree(byte t) {
         this.childNodes = new LinkedList<>();
         character = 0;
@@ -17,22 +28,47 @@ class SyntaxTree implements TokenList {
         setSemantikFunction(t);
     }
 
+    /**
+     * Sets token.
+     *
+     * @param t the t
+     */
     void setToken(byte t) {
         this.token = t;
     }
 
+    /**
+     * Gets token.
+     *
+     * @return the token
+     */
     byte getToken() {
         return this.token;
     }
 
+    /**
+     * Sets character.
+     *
+     * @param character the character
+     */
     void setCharacter(char character) {
         this.character = character;
     }
 
+    /**
+     * Gets character.
+     *
+     * @return the character
+     */
     char getCharacter() {
         return this.character;
     }
 
+    /**
+     * Print syntax tree.
+     *
+     * @param t the t
+     */
     void printSyntaxTree(int t) {
         for (int i = 0; i < t; i++)
             System.out.print("  ");
@@ -46,6 +82,11 @@ class SyntaxTree implements TokenList {
         }
     }
 
+    /**
+     * Gets token string.
+     *
+     * @return the token string
+     */
     String getTokenString() {
         switch (this.token) {
             case 0:
@@ -87,6 +128,11 @@ class SyntaxTree implements TokenList {
         }
     }
 
+    /**
+     * Sets semantik function.
+     *
+     * @param b the b
+     */
     void setSemantikFunction(byte b) {
         switch (b) {
             case 1:
@@ -116,6 +162,12 @@ class SyntaxTree implements TokenList {
         }
     }
 
+    /**
+     * Insert subtree syntax tree.
+     *
+     * @param b the b
+     * @return the syntax tree
+     */
     SyntaxTree insertSubtree(byte b) {
         SyntaxTree node;
         node = new SyntaxTree(b);
@@ -123,6 +175,12 @@ class SyntaxTree implements TokenList {
         return node;
     }
 
+    /**
+     * Gets child.
+     *
+     * @param i the
+     * @return the child
+     */
     SyntaxTree getChild(int i) {
         if (i > this.childNodes.size())
             return null;
@@ -130,10 +188,20 @@ class SyntaxTree implements TokenList {
             return this.childNodes.get(i);
     }
 
+    /**
+     * Gets child nodes.
+     *
+     * @return the child nodes
+     */
     LinkedList getChildNodes() {
         return this.childNodes;
     }
 
+    /**
+     * Gets child number.
+     *
+     * @return the child number
+     */
     int getChildNumber() {
         return childNodes.size();
     }

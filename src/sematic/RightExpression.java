@@ -1,5 +1,6 @@
-
-
+/**
+ * The type Right expression.
+ */
 class RightExpression extends Semantic {
 
     int f(SyntaxTree t, int n) {

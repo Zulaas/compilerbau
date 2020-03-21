@@ -1,4 +1,6 @@
-
+/**
+ * The type Num.
+ */
 class Num extends Semantic {
 
     private int potenz(int v) {

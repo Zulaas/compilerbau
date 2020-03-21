@@ -1,6 +1,12 @@
-
-
+/**
+ * The type Arithmetik parser application.
+ */
 class ArithmetikParserApplication implements TokenList {
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main(String args[]) {
         SyntaxTree parseTree = new SyntaxTree(TokenList.EXPRESSION);
 

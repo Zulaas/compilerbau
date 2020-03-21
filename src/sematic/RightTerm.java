@@ -1,4 +1,6 @@
-
+/**
+ * The type Right term.
+ */
 class RightTerm extends Semantic{
 
 	int f(SyntaxTree t, int n){

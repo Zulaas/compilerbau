@@ -1,7 +1,13 @@
 import java.io.*;
 
 
+/**
+ * The type Arithmetik parser class.
+ */
 public class ArithmetikParserClass implements TokenList {
+    /**
+     * The Eof.
+     */
     public final char EOF = (char) 255;
     private int pointer;
     private int maxPointer;
@@ -9,7 +15,11 @@ public class ArithmetikParserClass implements TokenList {
     private SyntaxTree parseTree;
 
 
-
+    /**
+     * Instantiates a new Arithmetik parser class.
+     *
+     * @param parseTree the parse tree
+     */
     ArithmetikParserClass(SyntaxTree parseTree) {
         this.parseTree = parseTree;
         this.input = new char[256];
@@ -17,11 +27,23 @@ public class ArithmetikParserClass implements TokenList {
         this.maxPointer = 0;
     }
 
+    /**
+     * Expression boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean expression(SyntaxTree sT) {
         return (term(sT.insertSubtree(TERM)) &&
                 rightExpression(sT.insertSubtree(RIGHT_EXPRESSION)));
     }
 
+    /**
+     * Right expression boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean rightExpression(SyntaxTree sT) {
         char[] addSet = {'+'};
         char[] subSet = {'-'};
@@ -38,13 +60,24 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
+    /**
+     * Term boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean term(SyntaxTree sT) {
         return (operator(sT.insertSubtree(OPERATOR))
                 && rightTerm(sT.insertSubtree(RIGHT_TERM)));
     }
 
 
-
+    /**
+     * Right term boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean rightTerm(SyntaxTree sT) {
         char[] multDivSet = {'*', '/'};
         char[] divSet = {'/'};
@@ -59,6 +92,12 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
+    /**
+     * Operator boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean operator(SyntaxTree sT) {
         char[] openParSet = {'('};
         char[] closeParSet = {')'};
@@ -85,6 +124,12 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
+    /**
+     * Num boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean num(SyntaxTree sT) {
         char[] digitSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
@@ -94,6 +139,12 @@ public class ArithmetikParserClass implements TokenList {
             return digit(sT.insertSubtree(DIGIT));
     }
 
+    /**
+     * Digit boolean.
+     *
+     * @param sT the s t
+     * @return the boolean
+     */
     boolean digit(SyntaxTree sT) {
         char[] matchSet = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
@@ -105,6 +156,13 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
+    /**
+     * Match boolean.
+     *
+     * @param matchSet the match set
+     * @param sT       the s t
+     * @return the boolean
+     */
     boolean match(char[] matchSet, SyntaxTree sT) {
         SyntaxTree node;
         for (int i = 0; i < matchSet.length; i++)
@@ -119,6 +177,12 @@ public class ArithmetikParserClass implements TokenList {
         return false;
     }
 
+    /**
+     * Look ahead boolean.
+     *
+     * @param aheadSet the ahead set
+     * @return the boolean
+     */
     boolean lookAhead(char[] aheadSet) {
         for (int i = 0; i < aheadSet.length; i++)
             if (input[pointer + 1] == aheadSet[i])
@@ -126,6 +190,12 @@ public class ArithmetikParserClass implements TokenList {
         return false;
     }
 
+    /**
+     * Read input boolean.
+     *
+     * @param name the name
+     * @return the boolean
+     */
     boolean readInput(String name) {
         int c = 0;
         try {
@@ -146,6 +216,11 @@ public class ArithmetikParserClass implements TokenList {
         return true;
     }
 
+    /**
+     * Input empty boolean.
+     *
+     * @return the boolean
+     */
     boolean inputEmpty() {
         if (pointer == maxPointer) {
             ausgabe("Eingabe leer!", 0);
@@ -158,12 +233,23 @@ public class ArithmetikParserClass implements TokenList {
     }
 
 
+    /**
+     * Ausgabe.
+     *
+     * @param s the s
+     * @param t the t
+     */
     void ausgabe(String s, int t) {
         for (int i = 0; i < t; i++)
             System.out.print("  ");
         System.out.println(s);
     }
 
+    /**
+     * Syntax error.
+     *
+     * @param s the s
+     */
     void syntaxError(String s) {
         char z;
         if (input[pointer] == EOF)
@@ -175,6 +261,11 @@ public class ArithmetikParserClass implements TokenList {
         System.out.println(s);
     }
 
+    /**
+     * Lexical analysis boolean.
+     *
+     * @return the boolean
+     */
     boolean lexicalAnalysis(){
         return true;
     }
