@@ -18,7 +18,7 @@ class NumAbstractScanner extends AbstractScanner {
                 {{}, {}, {}, {}, {}, {}, {}, {}, {}, {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}}};
 
         byte[] states = {START, KOMMA, IDENT, OPEN_PAR, CLOSE_PAR, PLUS, MINUS, MULT, DIV, NUM};
-        this.dea = new DEA(transitions, states);
+        this.determistischEndlicherAutomat = new DetermistischEndlicherAutomat(transitions, states);
     }
 
     @Override

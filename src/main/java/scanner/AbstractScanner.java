@@ -3,6 +3,7 @@ import java.io.*;
 
 /**
  * The type AbstractScanner.
+ *
  * @author jan
  */
 abstract class AbstractScanner implements TokenList {
@@ -19,11 +20,12 @@ abstract class AbstractScanner implements TokenList {
     /**
      * The Token stream.
      */
-    LinkedList<Token> tokenStream;
+    private LinkedList<Token> tokenStream;
+
     /**
-     * The Dea.
+     * The Determistisch endlicher automat.
      */
-    DEA dea;
+    DetermistischEndlicherAutomat determistischEndlicherAutomat;
 
 
     /**
@@ -164,8 +166,8 @@ abstract class AbstractScanner implements TokenList {
         do {
 
             transitionFound = false;
-            for (int j = 0; j < dea.transitions[actualState].length; j++) {
-                if (match(dea.transitions[actualState][j])) {
+            for (int j = 0; j < determistischEndlicherAutomat.transitions[actualState].length; j++) {
+                if (match(determistischEndlicherAutomat.transitions[actualState][j])) {
                     actualState = j;
                     System.out.println(actualState + "->" + j);
                     transitionFound = true;
@@ -174,8 +176,8 @@ abstract class AbstractScanner implements TokenList {
             }
         } while (transitionFound);
 
-        if ((dea.states[actualState] != NOT_FINAL) && (dea.states[actualState] != START)) {
-            return dea.states[actualState];
+        if ((determistischEndlicherAutomat.states[actualState] != NOT_FINAL) && (determistischEndlicherAutomat.states[actualState] != START)) {
+            return determistischEndlicherAutomat.states[actualState];
         } else {
             lexicalError("");
             System.out.println(pointer);
