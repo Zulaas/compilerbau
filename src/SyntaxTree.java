@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 class SyntaxTree implements TokenList {
@@ -88,20 +89,27 @@ class SyntaxTree implements TokenList {
 
     void setSemantikFunction(byte b) {
         switch (b) {
-			case 1: value=new Expression();
-					break;
-			case 2: value=new RightExpression();
-					break;
-			case 3: value=new Term();
-					break;
-			case 4: value=new RightTerm();
-					break;
-			case 5: value=new Num();
-					break;
-			case 6: value=new Operator();
-					break;
-			case 7: value=new Digit();
-					break;
+            case 1:
+                value = new Expression();
+                break;
+            case 2:
+                value = new RightExpression();
+                break;
+            case 3:
+                value = new Term();
+                break;
+            case 4:
+                value = new RightTerm();
+                break;
+            case 5:
+                value = new Num();
+                break;
+            case 6:
+                value = new Operator();
+                break;
+            case 7:
+                value = new Digit();
+                break;
             default:
                 value = new Semantic();
                 break;

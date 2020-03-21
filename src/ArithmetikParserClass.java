@@ -74,7 +74,7 @@ public class ArithmetikParserClass implements TokenList {
                     return false;
                 }
             } else {
-                syntaxError("Fehler in geschachtelter Expression");
+                syntaxError("Fehler in geschachtelter sematic.Expression");
                 return false;
             }
         else if (num(sT.insertSubtree(NUM)))

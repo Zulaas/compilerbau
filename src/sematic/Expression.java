@@ -1,5 +1,4 @@
 
-
 class Expression extends Semantic {
     // expression->term rightExpression
     // expression.f=rightExpression.f(term.f)
