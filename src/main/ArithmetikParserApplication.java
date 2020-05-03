@@ -1,21 +1,24 @@
 
-import parser.*;
-
 class ArithmetikParserApplication implements TokenList {
 
     public static void main(String args[]) {
-        SyntaxTree parseTree = new SyntaxTree(TokenList.EXPRESSION);
+        SyntaxTree parseTree = new SyntaxTree(EXPRESSION);
 
-        ArithmetikParserClass parser = new ArithmetikParserClass(parseTree);
-        if (parser.readInput("test.txt"))
-            if (parser.lexicalAnalysis())
-                if (parser.expression(parseTree) && parser.inputEmpty()) {
-                    parseTree.printSyntaxTree(0);
-//					System.out.println("Korrekter Ausdruck mit Wert:"
-//					+parseTree.value.f(parseTree,UNDEFINED));
-                } else
+        SourceScanner sourceScanner = new SourceScanner();
+        if (sourceScanner.readInput("tmp.txt")) {
+            if (sourceScanner.lexicalAnalysis()) {
+                ArithmetikParserClass parser = new ArithmetikParserClass(sourceScanner.tokenStream);
+                if (parser.parse() && parser.inputEmpty()) {
+                    for (String key : parser.treeList.keySet()) {
+                        SyntaxTree tree = parser.treeList.get(key);
+                        // tree.printSyntaxTree("", true);
+                    }
+                } else {
                     System.out.println("Fehler im Ausdruck");
-            else
+                }
+            } else {
                 System.out.println("Fehler in lexikalischer Analyse");
+            }
+        }
     }
 }
