@@ -1,102 +1,49 @@
+package scanner;
+
 import java.util.*;
 import java.io.*;
 
-/**
- * The type AbstractScanner.
- *
- * @author jan
- */
 abstract class AbstractScanner implements TokenList {
 
-
-
-    /**
-     * The Eof.
-     */
-    private final char EOF = (char) 255;
+    public final char EOF = (char) 255;
     private LinkedList<InputCharacter> inputStream;
     private int pointer;
     private String lexem;
-    /**
-     * The Token stream.
-     */
-    private LinkedList<Token> tokenStream;
+    LinkedList<Token> tokenStream;
+    DEA dea;
 
-    /**
-     * The Determistisch endlicher automat.
-     */
-    DetermistischEndlicherAutomat determistischEndlicherAutomat;
-
-
-    /**
-     * Match boolean.
-     *
-     * @param matchSet the match set
-     * @return the boolean
-     */
     boolean match(char[] matchSet) {
-        for (int i = 0; i < matchSet.length; i++) {
-            if (inputStream.get(pointer).character == matchSet[i]) {
-                System.out.println("match:" + inputStream.get(pointer).character);
-                lexem = lexem + inputStream.get(pointer).character;
-                pointer++;    //Eingabepointer auf das nächste Zeichen setzen
+        for (char c : matchSet)
+            if (inputStream.get(pointer).character == c) {
+                char currentChar = inputStream.get(pointer).character;
+                if (!(currentChar == '"' || currentChar == ' '))
+                    lexem = lexem + inputStream.get(pointer).character;
+                pointer++;
                 return true;
             }
-        }
         return false;
     }
 
-    /**
-     * Lexical error.
-     *
-     * @param s the s
-     */
     void lexicalError(String s) {
         char z;
-        System.out.println("lexikalischer Fehler in Zeile " +
-                inputStream.get(pointer).line + ". Zeichen: " +
+        System.out.println("lexikalischer ðŸ’£ in Zeile " +
+                inputStream.get(pointer).line + ".\nZeichen: " +
                 inputStream.get(pointer).character);
-        System.out.println((byte) inputStream.get(pointer).character);
     }
 
-
-    /**
-     * Gets token string.
-     *
-     * @param token the token
-     * @return the token string
-     */
     abstract String getTokenString(byte token);
 
-
-    /**
-     * Print token stream.
-     */
     void printTokenStream() {
-        for (int i = 0; i < tokenStream.size(); i++) {
-            System.out.println(getTokenString(tokenStream.get(i).token) + ": " +
-                    tokenStream.get(i).lexem);
-        }
+        for (Token token : tokenStream)
+            System.out.println(getTokenString(token.token) + ": " +
+                    token.lexem);
     }
 
-
-    /**
-     * Print input stream.
-     */
     void printInputStream() {
-        for (int i = 0; i < inputStream.size(); i++) {
-            System.out.print(inputStream.get(i).character);
-        }
+        for (InputCharacter inputCharacter : inputStream) System.out.print(inputCharacter.character);
         System.out.println();
-
     }
 
-    /**
-     * Read input boolean.
-     *
-     * @param name the name
-     * @return the boolean
-     */
     boolean readInput(String name) {
         int c = 0;
         int l = 1;
@@ -106,17 +53,16 @@ abstract class AbstractScanner implements TokenList {
             FileReader f = new FileReader(name);
             while (true) {
                 c = f.read();
+
                 if (c == -1) {
                     inputStream.addLast(new InputCharacter(EOF, l));
                     break;
-                } else if (((char) c) == ' ') {
+                    //}else if(((char)c)==' '){
                 } else if (((char) c) == '\n') {
-
+                    inputStream.addLast(new InputCharacter('\n', l));// carriage return ueberlesen und Zeilennummer hochzaehlen
                     l++;
                 } else if (c == 13) {
-
                 } else {
-
                     inputStream.addLast(new InputCharacter((char) c, l));
                 }
             }
@@ -124,65 +70,127 @@ abstract class AbstractScanner implements TokenList {
             System.out.println("Fehler beim Dateizugriff: " + name);
             return false;
         }
-        System.out.println(inputStream.size());
         return true;
     }
 
-    /**
-     * Lexical analysis boolean.
-     *
-     * @return the boolean
-     */
     boolean lexicalAnalysis() {
-        char[] eofset = {EOF};
+        char[] EOFSet = {EOF};
         byte token = NO_TYPE;
-
-        while (!match(eofset)) {
+        while (!match(EOFSet)) {
             token = getNextToken();
-            System.out.println(getTokenString(token));
-
             if (token == NO_TYPE) {
                 return false;
+            } else if (token == EndState) {
+
+            } else if (token == SYMBOL) {
+                matchLexem();
             } else {
-                tokenStream.
-                        addLast(new Token(token, inputStream.get(pointer - 1).line, lexem));
+                tokenStream.addLast(new Token(token, inputStream.get(pointer - 1).line, lexem));
             }
         }
         tokenStream.addLast(new Token((byte) EOF, inputStream.get(pointer - 1).line, "EOF"));
         return true;
     }
 
-    /**
-     * Gets next token.
-     *
-     * @return the next token
-     */
-    private byte getNextToken() {
+    private void matchLexem() {
+        switch (lexem.trim()) {
+            case "if":
+                tokenStream.addLast(new Token(IF, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "do":
+                tokenStream.addLast(new Token(DO, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "end":
+                tokenStream.addLast(new Token(END, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "while":
+                tokenStream.addLast(new Token(WHILE, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "define":
+                tokenStream.addLast(new Token(DEFINE, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "function":
+                tokenStream.add(new Token(FUNCTION, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "call":
+                tokenStream.add(new Token(CALL, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "assign":
+                tokenStream.add(new Token(ASSIGN, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "return":
+                tokenStream.add(new Token(RETURN, inputStream.get(pointer - 1).line, lexem));
+                break;
+            default:
+                tokenStream.addLast(new Token(SYMBOL, inputStream.get(pointer - 1).line, lexem));
+                break;
+        }
+    }
 
+    byte getNextToken() {
         boolean transitionFound = false;
         int actualState = 0;
+        int bufferState = 0;
+
         lexem = "";
-
         do {
-
             transitionFound = false;
-            for (int j = 0; j < determistischEndlicherAutomat.transitions[actualState].length; j++) {
-                if (match(determistischEndlicherAutomat.transitions[actualState][j])) {
-                    actualState = j;
-                    System.out.println(actualState + "->" + j);
-                    transitionFound = true;
-                    break;
+
+            for (int j = 0; j < dea.transitions[actualState].length; j++) {
+                if (match(dea.transitions[actualState][j])) {
+                    if ((dea.states[j] == EndState) && bufferState != 0) {
+                        actualState = bufferState;
+                        transitionFound = false;
+                        break;
+                    } else {
+
+                        actualState = j;
+                        bufferState = actualState;
+                        transitionFound = true;
+                        break;
+                    }
+
                 }
             }
         } while (transitionFound);
 
-        if ((determistischEndlicherAutomat.states[actualState] != NOT_FINAL) && (determistischEndlicherAutomat.states[actualState] != START)) {
-            return determistischEndlicherAutomat.states[actualState];
+        if ((dea.states[actualState] != NOT_FINAL) && (dea.states[actualState] != START)) {
+            return dea.states[actualState];
         } else {
             lexicalError("");
-            System.out.println(pointer);
             return NO_TYPE;
         }
     }
 
+    static class InputCharacter {
+        char character;
+        int line;
+
+        InputCharacter(char c, int l) {
+            this.character = c;
+            this.line = l;
+        }
+    }
+
+    static class DEA {
+        char[][][] transitions;
+        byte[] states;
+
+        DEA(char[][][] transitions, byte[] states) {
+            this.transitions = transitions;
+            this.states = states;
+        }
+    }
+
+    public static class Token {
+        public byte token;
+        public String lexem;
+        int line;
+
+        Token(byte token, int line, String lexem) {
+            this.token = token;
+            this.lexem = lexem;
+            this.line = line;
+        }
+    }
 }
