@@ -4,13 +4,13 @@ import scanner.TokenList;
 
 import java.util.*;
 
-class SyntaxTree implements TokenList {
+public class SyntaxTree implements TokenList {
 
     private LinkedList<SyntaxTree> childNodes;
     private byte token;
     private String character;
 
-    SyntaxTree(byte t) {
+    public SyntaxTree(byte t) {
         this.childNodes = new LinkedList<SyntaxTree>();
         character = "";
         setToken(t);

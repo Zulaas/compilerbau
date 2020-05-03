@@ -3,7 +3,7 @@ package scanner;
 public class SourceScanner extends AbstractScanner{
 
 	
-	SourceScanner(){
+	public SourceScanner(){
 
 		char[] az = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q', 'r','s','t','u','v','w','x','y','z'};
 		char[] n09 = {'0','1','2','3','4','5','6','7','8','9'};
@@ -30,7 +30,7 @@ public class SourceScanner extends AbstractScanner{
 				/*14 Endstate*/    {{},    {},     {},     {},         {},        {},      {},       {},      {},     {},   {},                {},     {},     {},     {}          }
 		};
 
-		byte[] states ={START, KOMMA, SYMBOL, OPEN_PAR, CLOSE_PAR, PLUS, MINUS, MULT, DIV, NUM, COMPARISION, COMPARISION, ASSIGN, STRING, EndState};
+		byte[] states ={START, KOMMA, SYMBOL, OPEN_PAR, CLOSE_PAR, PLUS, MINUS, MULT, DIV, NUM, COMPARISION, COMPARISION, GIBIHM, STRING, EndState};
 		this.dea=new DEA(transitions, states);
 	}
 

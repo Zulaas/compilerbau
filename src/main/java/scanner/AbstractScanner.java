@@ -9,7 +9,7 @@ abstract class AbstractScanner implements TokenList {
     private LinkedList<InputCharacter> inputStream;
     private int pointer;
     private String lexem;
-    LinkedList<Token> tokenStream;
+    public LinkedList<Token> tokenStream;
     DEA dea;
 
     boolean match(char[] matchSet) {
@@ -44,7 +44,7 @@ abstract class AbstractScanner implements TokenList {
         System.out.println();
     }
 
-    boolean readInput(String name) {
+    public boolean readInput(String name) {
         int c = 0;
         int l = 1;
         inputStream = new LinkedList<InputCharacter>();
@@ -73,7 +73,7 @@ abstract class AbstractScanner implements TokenList {
         return true;
     }
 
-    boolean lexicalAnalysis() {
+    public boolean lexicalAnalysis() {
         char[] EOFSet = {EOF};
         byte token = NO_TYPE;
         while (!match(EOFSet)) {
@@ -94,32 +94,38 @@ abstract class AbstractScanner implements TokenList {
 
     private void matchLexem() {
         switch (lexem.trim()) {
-            case "if":
-                tokenStream.addLast(new Token(IF, inputStream.get(pointer - 1).line, lexem));
+            case "watwenn":
+                tokenStream.addLast(new Token(WATWENN, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "do":
-                tokenStream.addLast(new Token(DO, inputStream.get(pointer - 1).line, lexem));
+            case "dann":
+                tokenStream.addLast(new Token(DANN, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "end":
-                tokenStream.addLast(new Token(END, inputStream.get(pointer - 1).line, lexem));
+            case "haltstopp":
+                tokenStream.addLast(new Token(HALTSTOPP, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "while":
-                tokenStream.addLast(new Token(WHILE, inputStream.get(pointer - 1).line, lexem));
+            case "goenndir":
+                tokenStream.addLast(new Token(GOENNDIR, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "define":
-                tokenStream.addLast(new Token(DEFINE, inputStream.get(pointer - 1).line, lexem));
+            case "machma":
+                tokenStream.add(new Token(MACHMA, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "function":
-                tokenStream.add(new Token(FUNCTION, inputStream.get(pointer - 1).line, lexem));
+            case "rufma":
+                tokenStream.add(new Token(RUFMA, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "call":
-                tokenStream.add(new Token(CALL, inputStream.get(pointer - 1).line, lexem));
+            case "gibihm":
+                tokenStream.add(new Token(GIBIHM, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "assign":
-                tokenStream.add(new Token(ASSIGN, inputStream.get(pointer - 1).line, lexem));
+            case "hauraus":
+                tokenStream.add(new Token(HAURAUS, inputStream.get(pointer - 1).line, lexem));
                 break;
-            case "return":
-                tokenStream.add(new Token(RETURN, inputStream.get(pointer - 1).line, lexem));
+            case "dat":
+                tokenStream.add(new Token(DAT, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "ist":
+                tokenStream.add(new Token(IST, inputStream.get(pointer - 1).line, lexem));
+                break;
+            case "raus":
+                tokenStream.add(new Token(RAUS, inputStream.get(pointer - 1).line, lexem));
                 break;
             default:
                 tokenStream.addLast(new Token(SYMBOL, inputStream.get(pointer - 1).line, lexem));

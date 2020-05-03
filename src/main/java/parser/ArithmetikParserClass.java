@@ -17,11 +17,11 @@ public class ArithmetikParserClass implements TokenList {
     public HashMap<String, LinkedList<SourceScanner.Token>> tokenLists;
     public HashMap<String, SyntaxTree> treeList;
 
-    ArithmetikParserClass(LinkedList<SourceScanner.Token> tokenStream){
+    public ArithmetikParserClass(LinkedList<SourceScanner.Token> tokenStream){
         this.tokenStream = tokenStream;
     }
 
-    boolean parse() {
+    public boolean parse() {
         tokenLists = new HashMap<>();
         treeList = new HashMap<>();
 
@@ -30,7 +30,7 @@ public class ArithmetikParserClass implements TokenList {
         while(i < tokenStream.size()) {
             SourceScanner.Token token = tokenStream.get(i);
 
-            if (token.token == FUNCTION) {
+            if (token.token == MACHMA) {
                 function_name = tokenStream.get(++i).lexem;
                 tokenLists.put(function_name, new LinkedList<>());
                 i++;
@@ -58,9 +58,9 @@ public class ArithmetikParserClass implements TokenList {
 
             this.tokens = tokenLists.get(pair.getKey());
             this.pointer = 0;
-            this.parseTree = new SyntaxTree(FUNCTION);
+            this.parseTree = new SyntaxTree(MACHMA);
 
-            if(this.tokens.getLast().token == END) {
+            if(this.tokens.getLast().token == HALTSTOPP) {
                 SourceScanner.Token t = this.tokens.getLast();
                 t.token = -1;
                 t.lexem = "EOF";
@@ -91,27 +91,27 @@ public class ArithmetikParserClass implements TokenList {
     }
 
     boolean expression(SyntaxTree sT){
-        if (compareToken(TokenList.DEFINE, sT)) {
+        if (compareToken(TokenList.GOENNDIR, sT)) {
             return (
-                    define(sT.insertSubtree(DEFINE))
+                    define(sT.insertSubtree(GOENNDIR))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(TokenList.ASSIGN, sT)) {
+        } else if (compareToken(TokenList.GIBIHM, sT)) {
             return (
-                    assign(sT.insertSubtree(ASSIGN))
+                    assign(sT.insertSubtree(GIBIHM))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(TokenList.CALL, sT)) {
+        } else if (compareToken(TokenList.RUFMA, sT)) {
             return (
-                    call(sT.insertSubtree(CALL))
+                    call(sT.insertSubtree(RUFMA))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(TokenList.IF, sT)) {
+        } else if (compareToken(TokenList.WATWENN, sT)) {
             return (
-                    comparator(sT.insertSubtree(IF))
+                    comparator(sT.insertSubtree(WATWENN))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
@@ -121,14 +121,14 @@ public class ArithmetikParserClass implements TokenList {
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(CALL, sT)) {
+        } else if (compareToken(RUFMA, sT)) {
             return (
-                    call(sT.insertSubtree(CALL))
+                    call(sT.insertSubtree(RUFMA))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(RETURN, sT)) {
-            return returnStatement(sT.insertSubtree(RETURN));
+        } else if (compareToken(HAURAUS, sT)) {
+            return returnStatement(sT.insertSubtree(HAURAUS));
         }
         else {
             sT.insertSubtree(EPSILON);
@@ -219,9 +219,9 @@ public class ArithmetikParserClass implements TokenList {
     }
 
     boolean conditionBranch(SyntaxTree sT) {
-        if (match(TokenList.DO, sT)) {
+        if (match(TokenList.DANN, sT)) {
             if (expression(sT.insertSubtree(EXPRESSION)) && rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))) {
-                if (match(TokenList.END, sT)) {
+                if (match(TokenList.HALTSTOPP, sT)) {
                     return true;
                 }
             }
@@ -377,7 +377,7 @@ public class ArithmetikParserClass implements TokenList {
         return tokens.get(pointer).token==token;
     }
 
-    boolean inputEmpty(){
+    public boolean inputEmpty(){
         if (pointer==maxPointer){
             ausgabe("Eingabe 📭! bzw zu am Ende",0);
             return true;
