@@ -1,0 +1,24 @@
+machma main() dat
+    goenndir b ist 0
+    goenndir c ist 0
+    goenndir x ist 0
+    goenndir t ist 0
+    goenndir a ist 0
+    rufma fib(20) raus x
+    rufma druck("fibonacci:") raus x
+    rufma druck(x) raus x
+haltstopp
+
+machma fib(s) dat
+    watwenn(s < 3) dann
+        gibihm t ist 1
+    haltstopp
+    watwenn(s > 2) dann
+        gibihm b ist (s-1)
+        gibihm c ist (s-2)
+        rufma fib(b) raus b
+        rufma fib(c) raus c
+        gibihm t ist (b+c)
+    haltstopp
+    hauraus t
+haltstopp
