@@ -95,7 +95,7 @@ public class ArithmetikParserClass implements TokenList {
                                 syntaxError("Wo ist das Haltstopp?!");
                                 return false;
                             }
-                        }else{
+                        } else {
                             syntaxError("Was ist da los?!");
                             return false;
                         }
@@ -118,26 +118,12 @@ public class ArithmetikParserClass implements TokenList {
 
     }
 
-
      /*boolean function(SyntaxTree sT) {
         return (
                 parameter(sT.insertSubtree(PARAMETER))
                         &&
                         expression(sT.insertSubtree(EXPRESSION))
         );*/
-
-
-    /*boolean parameter(SyntaxTree sT) {
-        if (match(TokenList.NUM, sT)) {
-            return true;
-        } else if (match(TokenList.SYMBOL, sT)) {
-            return true;
-        }
-        else {
-            syntaxError("Ziffer erwartet");
-            return false;
-        }
-    }*/
 
     boolean argument(SyntaxTree sT) { // PAsst das mit dem insertSubtree ?!
         if (match(TokenList.SYMBOL, sT)) {
@@ -155,40 +141,48 @@ public class ArithmetikParserClass implements TokenList {
     boolean expression(SyntaxTree sT) {
         if (compareToken(TokenList.GOENNDIR, sT)) {
             return (
-                    define(sT.insertSubtree(GOENNDIR))
+                    goenndir(sT.insertSubtree(GOENNDIR))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
         } else if (compareToken(TokenList.GIBIHM, sT)) {
             return (
-                    assign(sT.insertSubtree(GIBIHM))
+                    gibihm(sT.insertSubtree(GIBIHM))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
         } else if (compareToken(TokenList.RUFMA, sT)) {
             return (
+                    rufma(sT.insertSubtree(RUFMA))
+                            &&
+                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
+            );
+        /*} else if (compareToken(RUFMA, sT)) {
+            return (
                     call(sT.insertSubtree(RUFMA))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
+            );*/
         } else if (compareToken(TokenList.WATWENN, sT)) {
             return (
-                    comparator(sT.insertSubtree(WATWENN))
+                    watwenn(sT.insertSubtree(WATWENN))
+                            &&
+                            conditionBranch(sT.insertSubtree(CONDITIONBRANCH))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(TokenList.WHILE, sT)) {
+       /* } else if (compareToken(TokenList.WATWENN, sT)) {
+            return (
+                    watwenn(sT.insertSubtree(WATWENN))
+                            &&
+                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
+            );*/
+        /*} else if (compareToken(TokenList.WHILE, sT)) { //WHILE HABEN WIR GAR NICHT
             return (
                     comparator(sT.insertSubtree(WHILE))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
-        } else if (compareToken(RUFMA, sT)) {
-            return (
-                    call(sT.insertSubtree(RUFMA))
-                            &&
-                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
+            );*/
         } else if (compareToken(HAURAUS, sT)) {
             return returnStatement(sT.insertSubtree(HAURAUS));
         } else {
@@ -197,55 +191,64 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
-    boolean define(SyntaxTree sT) {
+    boolean goenndir(SyntaxTree sT) {
         if (symbol(sT.insertSubtree(SYMBOL))) {
-            if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
-                return symbol(sT.insertSubtree(SYMBOL));
-            } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
-                return string(sT.insertSubtree(STRING));
-            } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
-                return true;
+            if (match(TokenList.IST, sT)) {
+                if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
+                    return symbol(sT.insertSubtree(SYMBOL));
+                } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
+                    return string(sT.insertSubtree(STRING));
+                } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
+                    return true;
+            } else {
+                syntaxError("Ey, wo is denn das IST hin ey?");
+                return false;
+                }
+            }
+        }
+            return false;
+    }
+
+    boolean gibihm(SyntaxTree sT) {
+        if (symbol(sT.insertSubtree(SYMBOL))) {
+            if (match(TokenList.IST, sT)) {
+                if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
+                    return symbol(sT.insertSubtree(SYMBOL));
+                } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
+                    return string(sT.insertSubtree(STRING));
+                } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
+                    return true;
+                }
+            } else {
+                syntaxError("Ey, wo is denn das IST hin ey?");
+                return false;
             }
         }
 
         return false;
     }
 
-    boolean assign(SyntaxTree sT) {
-        if (symbol(sT.insertSubtree(SYMBOL))) {
-            if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
-                return symbol(sT.insertSubtree(SYMBOL));
-            } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
-                return string(sT.insertSubtree(STRING));
-            } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    boolean call(SyntaxTree sT) {
+    boolean rufma(SyntaxTree sT) {
         if (match(TokenList.SYMBOL, sT)) {
-            if (match(TokenList.NUM, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
-            } else if (match(TokenList.SYMBOL, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
-            } else if (match(TokenList.STRING, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
+                if (match(TokenList.NUM, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
+                } else if (match(TokenList.SYMBOL, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
+                } else if (match(TokenList.STRING, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
             }
         }
 
         return false;
     }
 
-    boolean comparator(SyntaxTree sT) {
+    boolean watwenn(SyntaxTree sT) {
         return (
                 comparision(sT.insertSubtree(COMPARISION))
                         &&
@@ -409,15 +412,12 @@ public class ArithmetikParserClass implements TokenList {
 
     boolean match(byte token, SyntaxTree sT) {
         SyntaxTree node;
-
         if (tokens.get(pointer).token == token) {
             node = sT.insertSubtree(INPUT_SIGN);
             node.setCharacter(tokens.get(pointer).lexem);
-
             pointer++;
             return true;
         }
-
         return false;
     }
 
