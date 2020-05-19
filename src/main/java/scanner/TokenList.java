@@ -39,7 +39,8 @@ public interface TokenList {
             IST=35,
             DAT=36,
             RAUS=37,
-            ARGUMENT = 38,
-            CONDITIONBRANCH = 39; //Das gleiche wie "dann"
+            FUNCTION_PARAMETER = 38,
+            CONDITIONBRANCH = 39, //Das gleiche wie "dann"
+            ARGUMENT=40;
     final int	UNDEFINED=0x10000001;
 }

@@ -9,10 +9,11 @@
 
 hauraus          -> num | symbol | string
 
-+argument         -> symbol | ε
++function_parameter         -> symbol | num | ε
 
-rufma            -> symbol '(' num ')' 'raus' symbol | symbol '(' string ')' 'raus' symbol |
-                    symbol '(' symbol ')' 'raus' symbol | symbol '(' ε ')' 'raus' symbol
++argument       -> symbol | num | string | ε
+
+rufma            -> symbol '(' argument ')' 'raus' symbol
 
 watwenn          -> '(' comparison ')'
 

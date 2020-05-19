@@ -9,7 +9,7 @@ class ArithmetikParserApplication implements TokenList {
         SourceScanner sourceScanner = new SourceScanner();
         if (sourceScanner.readInput("tmp2.txt")) {
             if (sourceScanner.lexicalAnalysis()) {
-                /*ArithmetikParserClass parser = new ArithmetikParserClass(sourceScanner.tokenStream);
+                ArithmetikParserClass parser = new ArithmetikParserClass(sourceScanner.tokenStream);
                 if (parser.parse() && parser.inputEmpty()) {
                     for (String key : parser.treeList.keySet()) {
                         SyntaxTree tree = parser.treeList.get(key);
@@ -17,8 +17,8 @@ class ArithmetikParserApplication implements TokenList {
                     }
                 } else {
                     System.out.println("Fehler im Ausdruck");
-                }*/
-                System.out.println("Lol");
+                }
+                //System.out.println("Lol");
             } else {
                 System.out.println("Fehler in lexikalischer Analyse");
             }

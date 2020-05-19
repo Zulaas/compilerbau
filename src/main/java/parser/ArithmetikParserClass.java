@@ -85,7 +85,7 @@ public class ArithmetikParserClass implements TokenList {
 
     boolean function(SyntaxTree sT) {
         if (match(TokenList.OPEN_PAR, sT)) {
-            if (argument(sT.insertSubtree(ARGUMENT))) {
+            if (function_parameter(sT.insertSubtree(FUNCTION_PARAMETER))) {
                 if (match(TokenList.CLOSE_PAR, sT)) {
                     if (match(TokenList.DAT, sT)) {
                         if (expression(sT.insertSubtree(EXPRESSION))) {
@@ -108,7 +108,7 @@ public class ArithmetikParserClass implements TokenList {
                     return false;
                 }
             } else {
-                syntaxError("Das is doch kein Argument, Kollege!");
+                syntaxError("Das is doch kein Parameter, Kollege!");
                 return false;
             }
         } else {
@@ -125,17 +125,40 @@ public class ArithmetikParserClass implements TokenList {
                         expression(sT.insertSubtree(EXPRESSION))
         );*/
 
+    boolean function_parameter(SyntaxTree sT) { // PAsst das mit dem insertSubtree ?!
+        if (match(TokenList.SYMBOL, sT)) {
+            return true;
+        } else if (match(TokenList.NUM, sT)){
+            //sT.insertSubtree(EPSILON);
+            return true;
+        }
+        else{
+            sT.insertSubtree(EPSILON);
+            return true;
+        }
+        /*else {
+            syntaxError("Entweder Parameter oder garnix!");
+            return false;
+        } */  //HIER MUSS EIGENTLICH NOCH GEMATCHED WRDEN OB ES WAS ANDERES ALS SYMBOL ODER EPSILON IST!
+    }
+
     boolean argument(SyntaxTree sT) { // PAsst das mit dem insertSubtree ?!
         if (match(TokenList.SYMBOL, sT)) {
             return true;
-        } else {
+        } else if (match(TokenList.NUM, sT)){
+            //sT.insertSubtree(EPSILON);
+            return true;
+        } else if(match(TokenList.STRING, sT)){
+            return true;
+        }
+        else{
             sT.insertSubtree(EPSILON);
             return true;
-        }/*
-        } else {
+        }
+        /*else {
             syntaxError("Entweder Parameter oder garnix!");
             return false;
-        }*/   //HIER MUSS EIGENTLICH NOCH GEMATCHED WRDEN OB ES WAS ANDERES ALS SYMBOL ODER EPSILON IST!
+        } */  //HIER MUSS EIGENTLICH NOCH GEMATCHED WRDEN OB ES WAS ANDERES ALS SYMBOL ODER EPSILON IST!
     }
 
     boolean expression(SyntaxTree sT) {
@@ -230,7 +253,33 @@ public class ArithmetikParserClass implements TokenList {
 
     boolean rufma(SyntaxTree sT) {
         if (match(TokenList.SYMBOL, sT)) {
-                if (match(TokenList.NUM, sT)) {
+            if (match(TokenList.OPEN_PAR, sT)) {
+                if (argument(sT.insertSubtree(ARGUMENT))) {
+                    if (match(TokenList.CLOSE_PAR, sT)) {
+                        if(match(TokenList.RAUS, sT)){
+                            if(match(TokenList.SYMBOL, sT)){
+                            } else{
+                                syntaxError("ich bin zu faul um wir was zu überlegen aber wo is Symbol");
+                                return false;
+                            }
+                        } else{
+                            syntaxError("ich bin zu faul um wir was zu überlegen aber wo is raus");
+                            return false;
+                        }
+                    } 
+                    else {
+                        syntaxError("Ey, wo is die Klammerzu?");
+                        return false;
+                    }
+                } else {
+                    syntaxError("Das is doch kein Argument, Kollege!");
+                    return false;
+                }
+            } else {
+                syntaxError("Ey, du musst Klammer auf machen!");
+                return false;
+            }
+                /*if (match(TokenList.NUM, sT)) {
                     if (match(TokenList.SYMBOL, sT)) {
                         return true;
                     }
@@ -242,7 +291,7 @@ public class ArithmetikParserClass implements TokenList {
                     if (match(TokenList.SYMBOL, sT)) {
                         return true;
                     }
-            }
+            }   */
         }
 
         return false;

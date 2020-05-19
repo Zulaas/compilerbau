@@ -4,7 +4,7 @@ machma main() dat
     goenndir x ist 0
     goenndir t ist 0
     goenndir a ist 0
-    rufma fib(20) raus x
+    rufma fib("xd") raus x
     rufma druck("fibonacci:") raus x
     rufma druck(x) raus x
 haltstopp
