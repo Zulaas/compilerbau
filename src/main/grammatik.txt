@@ -1,15 +1,15 @@
-machma           -> ('machma' '(' argument ')' 'dat' expression 'haltstopp')*
++machma           -> ('machma' '(' argument ')' 'dat' expression 'haltstopp')*
 
-expression       -> 'goenndir' goenndir right_expression | 'gibihm' gibihm right_expression | 
++expression       -> 'goenndir' goenndir right_expression | 'gibihm' gibihm right_expression |
                     'rufma' rufma right_expression | 'watwenn' watwenn conditionbranch expression | 'hauraus' hauraus | ε
 
-goenndir         -> symbol 'ist' symbol | symbol 'ist' term | symbol 'ist' string
++goenndir         -> symbol 'ist' symbol | symbol 'ist' term | symbol 'ist' string
 
-gibihm           -> symbol 'ist' symbol | symbol 'ist' term | symbol 'ist' string
++gibihm           -> symbol 'ist' symbol | symbol 'ist' term | symbol 'ist' string
 
 hauraus          -> num | symbol | string
 
-argument         -> symbol | ε
++argument         -> symbol | ε
 
 rufma            -> symbol '(' num ')' 'raus' symbol | symbol '(' string ')' 'raus' symbol |
                     symbol '(' symbol ')' 'raus' symbol | symbol '(' ε ')' 'raus' symbol

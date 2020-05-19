@@ -1,6 +1,7 @@
 package parser;
 
 import scanner.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,7 +9,7 @@ import java.util.LinkedList;
 
 public class ArithmetikParserClass implements TokenList {
 
-    public final char EOF=(char)255;
+    public final char EOF = (char) 255;
     private int pointer;
     private int maxPointer;
     public LinkedList<SourceScanner.Token> tokenStream;
@@ -17,7 +18,7 @@ public class ArithmetikParserClass implements TokenList {
     public HashMap<String, LinkedList<SourceScanner.Token>> tokenLists;
     public HashMap<String, SyntaxTree> treeList;
 
-    public ArithmetikParserClass(LinkedList<SourceScanner.Token> tokenStream){
+    public ArithmetikParserClass(LinkedList<SourceScanner.Token> tokenStream) {
         this.tokenStream = tokenStream;
     }
 
@@ -27,7 +28,7 @@ public class ArithmetikParserClass implements TokenList {
 
         String function_name = "";
         int i = 0;
-        while(i < tokenStream.size()) {
+        while (i < tokenStream.size()) {
             SourceScanner.Token token = tokenStream.get(i);
 
             if (token.token == MACHMA) {
@@ -36,7 +37,7 @@ public class ArithmetikParserClass implements TokenList {
                 i++;
             }
 
-            if (tokenStream.get(i).token != -1){
+            if (tokenStream.get(i).token != -1) {
                 tokenLists.get(function_name).add(tokenStream.get(i));
             }
 
@@ -45,7 +46,7 @@ public class ArithmetikParserClass implements TokenList {
 
         Iterator it = tokenLists.entrySet().iterator();
         while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry)it.next();
+            HashMap.Entry pair = (HashMap.Entry) it.next();
 
             /*
             System.out.println(pair.getKey());
@@ -60,17 +61,17 @@ public class ArithmetikParserClass implements TokenList {
             this.pointer = 0;
             this.parseTree = new SyntaxTree(MACHMA);
 
-            if(this.tokens.getLast().token == HALTSTOPP) {
+            if (this.tokens.getLast().token == HALTSTOPP) {
                 SourceScanner.Token t = this.tokens.getLast();
                 t.token = -1;
                 t.lexem = "EOF";
-            } else if(this.tokens.getLast().token == -1) {
+            } else if (this.tokens.getLast().token == -1) {
                 this.tokens.remove(this.tokens.size() - 1);
             }
 
 
             this.maxPointer = this.tokens.size() - 1;
-            if(!this.function(this.parseTree)) {
+            if (!this.function(this.parseTree)) {
                 return false;
             }
             treeList.put(pair.getKey().toString(), this.parseTree);
@@ -83,110 +84,171 @@ public class ArithmetikParserClass implements TokenList {
 
 
     boolean function(SyntaxTree sT) {
+        if (match(TokenList.OPEN_PAR, sT)) {
+            if (argument(sT.insertSubtree(ARGUMENT))) {
+                if (match(TokenList.CLOSE_PAR, sT)) {
+                    if (match(TokenList.DAT, sT)) {
+                        if (expression(sT.insertSubtree(EXPRESSION))) {
+                            if (match(TokenList.HALTSTOPP, sT)) {
+                                return true;
+                            } else {
+                                syntaxError("Wo ist das Haltstopp?!");
+                                return false;
+                            }
+                        } else {
+                            syntaxError("Was ist da los?!");
+                            return false;
+                        }
+                    } else {
+                        syntaxError("Dat kommt hier hin!");
+                        return false;
+                    }
+                } else {
+                    syntaxError("Ey, wo is die Klammerzu?");
+                    return false;
+                }
+            } else {
+                syntaxError("Das is doch kein Argument, Kollege!");
+                return false;
+            }
+        } else {
+            syntaxError("Ey, du musst Klammer auf machen!");
+            return false;
+        }
+
+    }
+
+     /*boolean function(SyntaxTree sT) {
         return (
                 parameter(sT.insertSubtree(PARAMETER))
                         &&
                         expression(sT.insertSubtree(EXPRESSION))
-        );
+        );*/
+
+    boolean argument(SyntaxTree sT) { // PAsst das mit dem insertSubtree ?!
+        if (match(TokenList.SYMBOL, sT)) {
+            return true;
+        } else {
+            sT.insertSubtree(EPSILON);
+            return true;
+        }/*
+        } else {
+            syntaxError("Entweder Parameter oder garnix!");
+            return false;
+        }*/   //HIER MUSS EIGENTLICH NOCH GEMATCHED WRDEN OB ES WAS ANDERES ALS SYMBOL ODER EPSILON IST!
     }
 
-    boolean expression(SyntaxTree sT){
+    boolean expression(SyntaxTree sT) {
         if (compareToken(TokenList.GOENNDIR, sT)) {
             return (
-                    define(sT.insertSubtree(GOENNDIR))
+                    goenndir(sT.insertSubtree(GOENNDIR))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
         } else if (compareToken(TokenList.GIBIHM, sT)) {
             return (
-                    assign(sT.insertSubtree(GIBIHM))
+                    gibihm(sT.insertSubtree(GIBIHM))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
         } else if (compareToken(TokenList.RUFMA, sT)) {
             return (
+                    rufma(sT.insertSubtree(RUFMA))
+                            &&
+                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
+            );
+        /*} else if (compareToken(RUFMA, sT)) {
+            return (
                     call(sT.insertSubtree(RUFMA))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
+            );*/
         } else if (compareToken(TokenList.WATWENN, sT)) {
             return (
-                    comparator(sT.insertSubtree(WATWENN))
+                    watwenn(sT.insertSubtree(WATWENN))
+                            &&
+                            conditionBranch(sT.insertSubtree(CONDITIONBRANCH))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (compareToken(TokenList.WHILE, sT)) {
+       /* } else if (compareToken(TokenList.WATWENN, sT)) {
+            return (
+                    watwenn(sT.insertSubtree(WATWENN))
+                            &&
+                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
+            );*/
+        /*} else if (compareToken(TokenList.WHILE, sT)) { //WHILE HABEN WIR GAR NICHT
             return (
                     comparator(sT.insertSubtree(WHILE))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
-        } else if (compareToken(RUFMA, sT)) {
-            return (
-                    call(sT.insertSubtree(RUFMA))
-                            &&
-                            rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
-            );
+            );*/
         } else if (compareToken(HAURAUS, sT)) {
             return returnStatement(sT.insertSubtree(HAURAUS));
-        }
-        else {
+        } else {
             sT.insertSubtree(EPSILON);
             return true;
         }
     }
 
-    boolean define(SyntaxTree sT) {
+    boolean goenndir(SyntaxTree sT) {
         if (symbol(sT.insertSubtree(SYMBOL))) {
-            if (inPlaceCompareToken(TokenList.SYMBOL,sT)) {
-                return symbol(sT.insertSubtree(SYMBOL));
-            } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
-                return string(sT.insertSubtree(STRING));
+            if (match(TokenList.IST, sT)) {
+                if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
+                    return symbol(sT.insertSubtree(SYMBOL));
+                } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
+                    return string(sT.insertSubtree(STRING));
+                } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
+                    return true;
+            } else {
+                syntaxError("Ey, wo is denn das IST hin ey?");
+                return false;
+                }
             }
-            else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
-                return true;
+        }
+            return false;
+    }
+
+    boolean gibihm(SyntaxTree sT) {
+        if (symbol(sT.insertSubtree(SYMBOL))) {
+            if (match(TokenList.IST, sT)) {
+                if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
+                    return symbol(sT.insertSubtree(SYMBOL));
+                } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
+                    return string(sT.insertSubtree(STRING));
+                } else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
+                    return true;
+                }
+            } else {
+                syntaxError("Ey, wo is denn das IST hin ey?");
+                return false;
             }
         }
 
         return false;
     }
 
-    boolean assign(SyntaxTree sT) {
-        if (symbol(sT.insertSubtree(SYMBOL))) {
-            if (inPlaceCompareToken(TokenList.SYMBOL,sT)) {
-                return symbol(sT.insertSubtree(SYMBOL));
-            } else if (inPlaceCompareToken(TokenList.STRING, sT)) {
-                return string(sT.insertSubtree(STRING));
-            }
-            else if (term(sT.insertSubtree(TERM)) /*&& rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))*/) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    boolean call(SyntaxTree sT) {
+    boolean rufma(SyntaxTree sT) {
         if (match(TokenList.SYMBOL, sT)) {
-            if (match(TokenList.NUM, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
-            } else if (match(TokenList.SYMBOL, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
-            } else if (match(TokenList.STRING, sT)) {
-                if (match(TokenList.SYMBOL, sT)) {
-                    return true;
-                }
+                if (match(TokenList.NUM, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
+                } else if (match(TokenList.SYMBOL, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
+                } else if (match(TokenList.STRING, sT)) {
+                    if (match(TokenList.SYMBOL, sT)) {
+                        return true;
+                    }
             }
         }
 
         return false;
     }
 
-    boolean comparator(SyntaxTree sT) {
+    boolean watwenn(SyntaxTree sT) {
         return (
                 comparision(sT.insertSubtree(COMPARISION))
                         &&
@@ -199,7 +261,7 @@ public class ArithmetikParserClass implements TokenList {
         boolean second = false;
         boolean third = false;
 
-        if (inPlaceCompareToken(TokenList.SYMBOL,sT)) {
+        if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
             first = symbol(sT.insertSubtree(SYMBOL));
         } else if (num(sT.insertSubtree(NUM))) {
             first = true;
@@ -209,7 +271,7 @@ public class ArithmetikParserClass implements TokenList {
             second = true;
         }
 
-        if (inPlaceCompareToken(TokenList.SYMBOL,sT)) {
+        if (inPlaceCompareToken(TokenList.SYMBOL, sT)) {
             third = symbol(sT.insertSubtree(SYMBOL));
         } else if (num(sT.insertSubtree(NUM))) {
             third = true;
@@ -230,14 +292,14 @@ public class ArithmetikParserClass implements TokenList {
         return false;
     }
 
-    boolean rightExpression(SyntaxTree sT){
-        if (match(TokenList.PLUS,sT)) {
+    boolean rightExpression(SyntaxTree sT) {
+        if (match(TokenList.PLUS, sT)) {
             return (
                     term(sT.insertSubtree(TERM))
                             &&
                             rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))
             );
-        } else if (match(TokenList.MINUS,sT)) {
+        } else if (match(TokenList.MINUS, sT)) {
             return (
                     term(sT.insertSubtree(TERM))
                             &&
@@ -254,7 +316,7 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
-    boolean term(SyntaxTree sT){
+    boolean term(SyntaxTree sT) {
         return (
                 operator(sT.insertSubtree(OPERATOR))
                         &&
@@ -262,8 +324,8 @@ public class ArithmetikParserClass implements TokenList {
         );
     }
 
-    boolean rightTerm(SyntaxTree sT){
-        if (match(TokenList.MULT,sT) || match(TokenList.DIV, sT)) {
+    boolean rightTerm(SyntaxTree sT) {
+        if (match(TokenList.MULT, sT) || match(TokenList.DIV, sT)) {
             return (
                     operator(sT.insertSubtree(OPERATOR))
                             &&
@@ -275,18 +337,18 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
-    boolean operator(SyntaxTree sT){
-        if (match(TokenList.OPEN_PAR,sT)) {
-            if (term(sT.insertSubtree(TERM)) && rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))){
+    boolean operator(SyntaxTree sT) {
+        if (match(TokenList.OPEN_PAR, sT)) {
+            if (term(sT.insertSubtree(TERM)) && rightExpression(sT.insertSubtree(RIGHT_EXPRESSION))) {
 
-                if(match(TokenList.CLOSE_PAR,sT)) {
+                if (match(TokenList.CLOSE_PAR, sT)) {
                     return true;
                 } else {
                     syntaxError("Geschlossene 📎 erwartet");
                     return false;
                 }
 
-            }else{
+            } else {
                 syntaxError("Fehler in geschachtelter Expression");
                 return false;
             }
@@ -294,14 +356,13 @@ public class ArithmetikParserClass implements TokenList {
             return num(sT.insertSubtree(NUM));
         } else if (inPlaceCompareToken(SYMBOL, sT)) {
             return symbol(sT.insertSubtree(SYMBOL));
-        }
-        else {
+        } else {
             syntaxError("🔢 oder 🖇 auf erwartet");
             return false;
         }
     }
 
-    boolean num(SyntaxTree sT){
+    boolean num(SyntaxTree sT) {
         if (match(TokenList.NUM, sT)) {
             return true;
         } else {
@@ -333,8 +394,7 @@ public class ArithmetikParserClass implements TokenList {
             return true;
         } else if (match(TokenList.SYMBOL, sT)) {
             return true;
-        }
-        else {
+        } else {
             syntaxError("Ziffer erwartet");
             return false;
         }
@@ -350,22 +410,19 @@ public class ArithmetikParserClass implements TokenList {
         }
     }
 
-    boolean match(byte token, SyntaxTree sT){
+    boolean match(byte token, SyntaxTree sT) {
         SyntaxTree node;
-
-        if (tokens.get(pointer).token==token){
-            node=sT.insertSubtree(INPUT_SIGN);
+        if (tokens.get(pointer).token == token) {
+            node = sT.insertSubtree(INPUT_SIGN);
             node.setCharacter(tokens.get(pointer).lexem);
-
             pointer++;
             return true;
         }
-
         return false;
     }
 
-    boolean compareToken(byte token, SyntaxTree sT){
-        if (tokens.get(pointer).token==token){
+    boolean compareToken(byte token, SyntaxTree sT) {
+        if (tokens.get(pointer).token == token) {
             pointer++;
             return true;
         }
@@ -374,27 +431,27 @@ public class ArithmetikParserClass implements TokenList {
     }
 
     boolean inPlaceCompareToken(byte token, SyntaxTree sT) {
-        return tokens.get(pointer).token==token;
+        return tokens.get(pointer).token == token;
     }
 
-    public boolean inputEmpty(){
-        if (pointer==maxPointer){
-            ausgabe("Eingabe 📭! bzw zu am Ende",0);
+    public boolean inputEmpty() {
+        if (pointer == maxPointer) {
+            ausgabe("Eingabe 📭! bzw zu am Ende", 0);
             return true;
-        }else{
+        } else {
             syntaxError("Eingabe bei Ende des Parserdurchlaufs nicht leer");
             return false;
         }
 
     }
 
-    void ausgabe(String s, int t){
-        for(int i=0;i<t;i++)
+    void ausgabe(String s, int t) {
+        for (int i = 0; i < t; i++)
             System.out.print("  ");
         System.out.println(s);
     }
 
-    void syntaxError(String s){
+    void syntaxError(String s) {
         char z;
         if (pointer >= tokens.size()) {
             //System.out.println("Syntax Fehler beim " + (pointer + 1) + ". Zeichen: EOF");
