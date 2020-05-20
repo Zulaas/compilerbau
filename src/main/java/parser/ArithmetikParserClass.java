@@ -258,6 +258,7 @@ public class ArithmetikParserClass implements TokenList {
                     if (match(TokenList.CLOSE_PAR, sT)) {
                         if(match(TokenList.RAUS, sT)){
                             if(match(TokenList.SYMBOL, sT)){
+                                return true;
                             } else{
                                 syntaxError("ich bin zu faul um wir was zu überlegen aber wo is Symbol");
                                 return false;
@@ -503,11 +504,9 @@ public class ArithmetikParserClass implements TokenList {
     void syntaxError(String s) {
         char z;
         if (pointer >= tokens.size()) {
-            //System.out.println("Syntax Fehler beim " + (pointer + 1) + ". Zeichen: EOF");
-            System.out.println("Syntax 💥 beim " + (pointer + 1) + ". Zeichen: 🔚");
+            System.out.println("Syntaxfehler beim " + (pointer + 1) + ". Zeichen: EOF");
         } else {
-            System.out.println("Syntax 💥 beim " + (pointer + 1) + ". Zeichen: " + tokens.get(pointer).token);
-            System.out.println(tokens.get(pointer).lexem);
+            System.out.println("Syntaxfehler beim " + (pointer + 1) + ". Zeichen: " + tokens.get(pointer).lexem);
         }
         System.out.println(s);
     }

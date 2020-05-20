@@ -26,9 +26,9 @@ abstract class AbstractScanner implements TokenList {
 
     void lexicalError(String s) {
         char z;
-        System.out.println("lexikalischer 💣 in Zeile " +
+        System.out.println("lexikalischer Fehler in Zeile " +
                 inputStream.get(pointer).line + ".\nZeichen: " +
-                inputStream.get(pointer).character);
+                (char) inputStream.get(pointer).character);
     }
 
     abstract String getTokenString(byte token);

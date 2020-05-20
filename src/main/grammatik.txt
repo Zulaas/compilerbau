@@ -13,7 +13,7 @@ hauraus          -> num | symbol | string
 
 +argument       -> symbol | num | string | ε
 
-rufma            -> symbol '(' argument ')' 'raus' symbol
++rufma            -> symbol '(' argument ')' 'raus' symbol
 
 watwenn          -> '(' comparison ')'
 
